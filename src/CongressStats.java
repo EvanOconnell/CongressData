@@ -25,12 +25,12 @@ public class CongressStats
     }
     
     public static void main(String[] args){
-    	CongressStats stats = new CongressStats(113);
-    	
-    	System.out.println("Info for 113th congress...\n");
-    	stats.printPartyBreakdownInSenate();
-    	stats.printPartyBreakdownInHouse();
-    	stats.printMemberListStateBreakdown(Chamber.SENATE);
+        CongressStats stats = new CongressStats(113);
+        
+        System.out.println("Info for 113th congress...\n");
+        stats.printPartyBreakdownInSenate();
+        stats.printPartyBreakdownInHouse();
+        stats.printStateBreakdownInSenate();
     }
 
     /**
@@ -38,11 +38,20 @@ public class CongressStats
      */
     public void printPartyBreakdownInSenate()
     {
-		List<MemberOfCongress> memlist = parseMembersOfCongress(CongressDataFetcher.fetchSenateData(congressNum));
-		
-		System.out.println("-----------SENATE INFO-----------\n\n"+
-				"There are "+memlist.size()+" members in the Senate.");
-		printMemberListPartyBreakdown(memlist);
+        List<MemberOfCongress> memlist = parseMembersOfCongress(CongressDataFetcher.fetchSenateData(congressNum));
+        
+        System.out.println("-----------SENATE INFO-----------\n\n"+
+                "There are "+memlist.size()+" members in the Senate.");
+        printMemberListPartyBreakdown(memlist);
+    }
+    
+    /**
+     * Calculate and print each state and the number of House members in it.
+     */
+    public void printStateBreakdownInSenate()
+    {
+        System.out.println("------MEMBER'S STATE INFO------\n\nSenate Members's states:");
+        printMemberListStateBreakdown(parseMembersOfCongress(CongressDataFetcher.fetchSenateData(congressNum)));
     }
     
     /**
@@ -51,17 +60,17 @@ public class CongressStats
      * @param memlist List of members in Chamber of congress
      */
     private void printMemberListPartyBreakdown(List<MemberOfCongress> memlist){
-    	int r_count = 0, d_count = 0, i_count = 0;
-		
-		for(MemberOfCongress mem : memlist){
-			switch (mem.getParty().charAt(0)) {
-				case 'R': r_count++; break;
-				case 'D': d_count++; break;
-				default: i_count++; break;
-			}
-		}
-		
-		System.out.println(r_count+" are in the Republican Party, "+d_count+" are Democrats and "+i_count+" are independent.\n");
+        int r_count = 0, d_count = 0, i_count = 0;
+        
+        for(MemberOfCongress mem : memlist){
+            switch (mem.getParty().charAt(0)) {
+                case 'R': r_count++; break;
+                case 'D': d_count++; break;
+                default: i_count++; break;
+            }
+        }
+        
+        System.out.println(r_count+" are in the Republican Party, "+d_count+" are Democrats and "+i_count+" are independent.\n");
     }
     
     /**
@@ -69,27 +78,32 @@ public class CongressStats
      * 
      * @param memlist List of members in Chamber of congress
      */
-    private void printMemberListStateBreakdown(Chamber chamber){
-		List<MemberOfCongress> memlist = parseMembersOfCongress(CongressDataFetcher.fetchCongressData(chamber, congressNum));
-    	
-    	HashMap<String, Integer> state_list = new HashMap<String, Integer>();
-    	
-		for(MemberOfCongress mem : memlist){
-			String state = mem.getState();
-			if(state_list.containsKey(state)){
-				int new_val = state_list.get(state)+1;
-				state_list.put(state, new_val);
-			} else {
-				state_list.put(state, 1);
-			}
-		}
-		
-		System.out.println("------MEMBER'S STATE INFO------\n\nThere are:");
-		printMemberListPartyBreakdown(memlist);
-		for(Iterator<Entry<String, Integer>> iterator = state_list.entrySet().iterator(); iterator.hasNext();){
-			Entry<String, Integer> entry = iterator.next();
-			System.out.print(entry.getValue()+" in the state "+entry.getKey());
-		}
+    private void printMemberListStateBreakdown(List<MemberOfCongress> memlist){
+        HashMap<String, Integer> state_list = new HashMap<String, Integer>();
+        
+        for(MemberOfCongress mem : memlist){
+            String state = mem.getState();
+            if(state_list.containsKey(state)){
+                int new_val = state_list.get(state)+1;
+                state_list.put(state, new_val);
+            } else {
+                state_list.put(state, 1);
+            }
+        }
+        
+        for(Iterator<Entry<String, Integer>> iterator = state_list.entrySet().iterator(); iterator.hasNext();){
+            Entry<String, Integer> entry = iterator.next();
+            System.out.println(entry.getValue()+" in the state "+entry.getKey());
+        }
+    }
+    
+    /**
+     * Calculate and print each state and the number of House members in it.
+     */
+    public void printStateBreakdownInHouse()
+    {
+        System.out.println("------MEMBER'S STATE INFO------\n\nHouse Members's states:");
+        printMemberListStateBreakdown(parseMembersOfCongress(CongressDataFetcher.fetchHouseData(congressNum)));
     }
 
     /**
@@ -97,10 +111,10 @@ public class CongressStats
      */
     public void printPartyBreakdownInHouse()
     {
-    	List<MemberOfCongress> memlist = parseMembersOfCongress(CongressDataFetcher.fetchHouseData(congressNum));
-		
-		System.out.println("-----------HOUSE INFO-----------\n\n"+
-				"There are "+memlist.size()+" members in the House.");
+        List<MemberOfCongress> memlist = parseMembersOfCongress(CongressDataFetcher.fetchHouseData(congressNum));
+        
+        System.out.println("-----------HOUSE INFO-----------\n\n"+
+                "There are "+memlist.size()+" members in the House.");
 		printMemberListPartyBreakdown(memlist);
     }
     
