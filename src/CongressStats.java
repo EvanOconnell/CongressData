@@ -29,7 +29,7 @@ public class CongressStats
     	
     	stats.printPartyBreakdownInSenate();
     	stats.printPartyBreakdownInHouse();
-    	stats.printMemberListStateBreakdown();
+    	stats.printMemberListStateBreakdown(Chamber.SENATE);
     }
 
     /**
@@ -68,9 +68,8 @@ public class CongressStats
      * 
      * @param memlist List of members in Chamber of congress
      */
-    private void printMemberListStateBreakdown(){
-		List<MemberOfCongress> memlist = parseMembersOfCongress(CongressDataFetcher.fetchHouseData(congressNum));
-		memlist.addAll(parseMembersOfCongress(CongressDataFetcher.fetchSenateData(congressNum)));
+    private void printMemberListStateBreakdown(Chamber chamber){
+		List<MemberOfCongress> memlist = parseMembersOfCongress(CongressDataFetcher.fetchCongressData(chamber, congressNum));
     	
     	HashMap<String, Integer> state_list = new HashMap<String, Integer>();
     	

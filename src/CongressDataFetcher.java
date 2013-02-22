@@ -59,7 +59,7 @@ public class CongressDataFetcher
     /**
      * Fetch member data for the given chamber and congress number
      */
-    private static String fetchCongressData(Chamber chamber, int congressNum)
+    public static String fetchCongressData(Chamber chamber, int congressNum)
     {
         try {
             URL url = new URL(BASE_URL + "?chamber=" + chamber + "&congressNum=" + congressNum);
