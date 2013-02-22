@@ -1,10 +1,11 @@
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Calculate stats on members of Congress
  * 
- * @author Tang
- * @version 2013.02.02
+ * @author EvanOconnell
+ * @version 2013.02.21
  */
 public class CongressStats
 {
@@ -17,30 +18,38 @@ public class CongressStats
     {
         this.congressNum = congressNum;
     }
+    
+    public static void main(String[] args){
+    	CongressStats stats = new CongressStats(113);
+    	
+    	stats.printPartyBreakdownInSenate();
+    }
 
     /**
      * Calculate and print the number of Democrats, Republicans, and Independents in this Senate
      */
     public void printPartyBreakdownInSenate()
     {
-        // Call fetchSenateData in CongressDataFetcher class to fetch data in the form of a JSON string
-
-        
-        // Call parseMembersOfCongress passing it the JSON string
-
-        
-        // Print a header message giving the number of members in this chamber in this congress number
-
-        
-        // Calculate and then print the number of democrats (party is "D"),
-        //   republicans (party is "R"), and independents (party is anything else).
-        // You will need to loop over the MemberOfCongress ArrayList returned by parseMembersOfCongress
-        //   and count up how many of each party type there are.
-        // Hint: Use 3 local variables, one for each party type, that are initialized to 0.
-        //   In your loop check which party the current member belongs to and increment the proper variable.
-        //   After the loop completes, print the totals
+		String json = CongressDataFetcher.fetchSenateData(congressNum);
+		List<MemberOfCongress> memlist = parseMembersOfCongress(json);
+		
+		System.out.println("--------------------------------------\n"+
+				"There are "+memlist.size()+" members in the Senate.");
+		
+		int r_count = 0, d_count = 0, i_count = 0;
+		
+		for(MemberOfCongress mem : memlist){
+			switch (mem.getParty().charAt(0)) {
+				case 'R': r_count++; break;
+				case 'D': d_count++; break;
+				default: i_count++; break;
+			}
+		}
+		
+		System.out.println(r_count+" are in the Republican Party, "+d_count+" are Democrats and "+i_count+" are independent.");
 
     }
+    
 
     /**
      * Calculate and print the number of Democrats, Republicans, and Independents in this House
@@ -52,8 +61,6 @@ public class CongressStats
         
         // Hint: if you end up with a lot of duplicate code, think of using the Extract Method refactoring
     }
-
-    // Don't forget to add a third method of your choice
     
     /**
      * @param jsonString a string listing members of congress in JSON format
