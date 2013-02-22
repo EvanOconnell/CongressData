@@ -33,7 +33,7 @@ public class CongressStats
 		String json = CongressDataFetcher.fetchSenateData(congressNum);
 		List<MemberOfCongress> memlist = parseMembersOfCongress(json);
 		
-		System.out.println("--------------------------------------\n"+
+		System.out.println("-----------SENATE INFO-----------\n\n"+
 				"There are "+memlist.size()+" members in the Senate.");
 		
 		int r_count = 0, d_count = 0, i_count = 0;
@@ -50,16 +50,31 @@ public class CongressStats
 
     }
     
+    
+    
 
     /**
      * Calculate and print the number of Democrats, Republicans, and Independents in this House
      */
     public void printPartyBreakdownInHouse()
     {
-        // This method will be similar to printPartyBreakdownInSenate, but you will call
-        // fetchHouseData in CongressDataFetcher to fetch the data
-        
-        // Hint: if you end up with a lot of duplicate code, think of using the Extract Method refactoring
+    	String json = CongressDataFetcher.fetchHouseData(congressNum);
+		List<MemberOfCongress> memlist = parseMembersOfCongress(json);
+		
+		System.out.println("-----------HOUSE INFO-----------\n\n"+
+				"There are "+memlist.size()+" members in the House.");
+		
+		int r_count = 0, d_count = 0, i_count = 0;
+		
+		for(MemberOfCongress mem : memlist){
+			switch (mem.getParty().charAt(0)) {
+				case 'R': r_count++; break;
+				case 'D': d_count++; break;
+				default: i_count++; break;
+			}
+		}
+		
+		System.out.println(r_count+" are in the Republican Party, "+d_count+" are Democrats and "+i_count+" are independent.");
     }
     
     /**
