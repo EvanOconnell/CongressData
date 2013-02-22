@@ -23,6 +23,7 @@ public class CongressStats
     	CongressStats stats = new CongressStats(113);
     	
     	stats.printPartyBreakdownInSenate();
+    	stats.printPartyBreakdownInHouse();
     }
 
     /**
@@ -30,13 +31,20 @@ public class CongressStats
      */
     public void printPartyBreakdownInSenate()
     {
-		String json = CongressDataFetcher.fetchSenateData(congressNum);
-		List<MemberOfCongress> memlist = parseMembersOfCongress(json);
+		List<MemberOfCongress> memlist = parseMembersOfCongress(CongressDataFetcher.fetchSenateData(congressNum));
 		
 		System.out.println("-----------SENATE INFO-----------\n\n"+
 				"There are "+memlist.size()+" members in the Senate.");
-		
-		int r_count = 0, d_count = 0, i_count = 0;
+		printMemberListPartyBreakdown(memlist);
+    }
+    
+    /**
+     * Prints out summary of party info on memebers of this chamber
+     * 
+     * @param memlist List of members in Chamber of congress
+     */
+    public void printMemberListPartyBreakdown(List<MemberOfCongress> memlist){
+    	int r_count = 0, d_count = 0, i_count = 0;
 		
 		for(MemberOfCongress mem : memlist){
 			switch (mem.getParty().charAt(0)) {
@@ -47,34 +55,18 @@ public class CongressStats
 		}
 		
 		System.out.println(r_count+" are in the Republican Party, "+d_count+" are Democrats and "+i_count+" are independent.");
-
     }
-    
-    
-    
 
     /**
      * Calculate and print the number of Democrats, Republicans, and Independents in this House
      */
     public void printPartyBreakdownInHouse()
     {
-    	String json = CongressDataFetcher.fetchHouseData(congressNum);
-		List<MemberOfCongress> memlist = parseMembersOfCongress(json);
+    	List<MemberOfCongress> memlist = parseMembersOfCongress(CongressDataFetcher.fetchHouseData(congressNum));
 		
 		System.out.println("-----------HOUSE INFO-----------\n\n"+
 				"There are "+memlist.size()+" members in the House.");
-		
-		int r_count = 0, d_count = 0, i_count = 0;
-		
-		for(MemberOfCongress mem : memlist){
-			switch (mem.getParty().charAt(0)) {
-				case 'R': r_count++; break;
-				case 'D': d_count++; break;
-				default: i_count++; break;
-			}
-		}
-		
-		System.out.println(r_count+" are in the Republican Party, "+d_count+" are Democrats and "+i_count+" are independent.");
+		printMemberListPartyBreakdown(memlist);
     }
     
     /**
