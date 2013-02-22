@@ -27,6 +27,7 @@ public class CongressStats
     public static void main(String[] args){
     	CongressStats stats = new CongressStats(113);
     	
+    	System.out.println("Info for 113th congress...\n");
     	stats.printPartyBreakdownInSenate();
     	stats.printPartyBreakdownInHouse();
     	stats.printMemberListStateBreakdown(Chamber.SENATE);
@@ -60,7 +61,7 @@ public class CongressStats
 			}
 		}
 		
-		System.out.println(r_count+" are in the Republican Party, "+d_count+" are Democrats and "+i_count+" are independent.");
+		System.out.println(r_count+" are in the Republican Party, "+d_count+" are Democrats and "+i_count+" are independent.\n");
     }
     
     /**
@@ -87,7 +88,7 @@ public class CongressStats
 		printMemberListPartyBreakdown(memlist);
 		for(Iterator<Entry<String, Integer>> iterator = state_list.entrySet().iterator(); iterator.hasNext();){
 			Entry<String, Integer> entry = iterator.next();
-			System.out.println(entry.getValue()+" in the state "+entry.getKey());
+			System.out.print(entry.getValue()+" in the state "+entry.getKey());
 		}
     }
 
